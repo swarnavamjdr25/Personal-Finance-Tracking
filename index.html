@@ -613,27 +613,6 @@
 <script>
 'use strict';
 
-// ── SERVICE WORKER ─────────────────────────────────────────────────────────
-if ('serviceWorker' in navigator) {
-  try {
-    var swCode = [
-      "var CACHE='pft-v1';",
-      "self.addEventListener('install',function(e){",
-      "  e.waitUntil(caches.open(CACHE).then(function(c){return c.addAll([self.location.href]);}).then(function(){return self.skipWaiting();}));",
-      "});",
-      "self.addEventListener('activate',function(e){e.waitUntil(clients.claim());});",
-      "self.addEventListener('fetch',function(e){",
-      "  if(e.request.mode==='navigate'){",
-      "    e.respondWith(fetch(e.request).catch(function(){return caches.match(e.request);}));",
-      "  }",
-      "});"
-    ].join('');
-    var swBlob = new Blob([swCode], {type:'application/javascript'});
-    var swUrl  = URL.createObjectURL(swBlob);
-    navigator.serviceWorker.register(swUrl);
-  } catch(e) {}
-}
-
 // ── CLOCK SETUP ────────────────────────────────────────────────────────────
 // clockOffset stays 0 — we use device time directly (Date.now()).
 // The modal just shows the detected device time; user confirms once.
